@@ -84,8 +84,10 @@
       layout = "us";
 
       displayManager = {
-        lightdm = {
+        slim = {
           enable = true;
+          autoLogin = true;
+          defaultUser = "fox";
         };
       };
 
@@ -113,12 +115,11 @@
     extraUsers = {
       fox = {
         description = "Fox";
-        home = "/home/fox";
+        isNormalUser = true;
         extraGroups = [
           "wheel"
           "networkmanager"
         ];
-        shell = "/run/current-system/sw/bin/fish";
         uid = 1000;
       };
     };
