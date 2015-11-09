@@ -71,7 +71,7 @@
   # $ nix-env -qaP | grep wget
   # Packages to install
   environment.systemPackages = with pkgs; [
-    neovim
+    vimHugeX
     git
     mercurial
     fish
