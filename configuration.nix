@@ -128,7 +128,7 @@
     fontconfig = {
       defaultFonts = {
         monospace = [
-          "Source Code Pro"
+          "Sauce Code Powerline"
         ];
         sansSerif = [
           "Source Sans Pro"
@@ -139,6 +139,7 @@
       };
     };
     fonts = with pkgs; [
+      corefonts # Microsoft free fonts
       powerline-fonts
       source-code-pro
       source-sans-pro
