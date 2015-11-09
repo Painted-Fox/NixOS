@@ -139,6 +139,7 @@
       };
     };
     fonts = with pkgs; [
+      powerline-fonts
       source-code-pro
       source-sans-pro
       source-serif-pro
