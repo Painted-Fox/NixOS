@@ -1,103 +1,145 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./packages.nix
+  ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda";
+  virtualisation = {
+    virtualbox = {
+      guest = {
+        enable = true;
+      };
+    };
+  };
 
-  networking.hostName = "vox"; # Define your hostname.
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "ata_piix"
+        "ohci_pci"
+      ];
+    };
 
-  # Enable using NetworkManager.
-  networking.networkmanager.enable = true;
+    kernelModules = [ ];
+    extraModulePackages = [ ];
 
-  # Select internationalisation properties.
+    loader = {
+      grub = {
+        device = "/dev/sda";
+        version = 2;
+        memtest86 = {
+          enable = true;
+        };
+      };
+    };
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "ext2";
+    };
+  };
+
+  swapDevices = [
+    { device = "/dev/disk/by-label/swap"; }
+  ];
+
+  networking = {
+    hostName = "vox";
+    networkmanager = {
+      enable = true;
+    };
+  };
+
+  nix = {
+    maxJobs = 2;
+  };
+
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
 
-  # Set your time zone.
-  time.timeZone = "America/New_York";
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable LightDM as the display manager.
-  services.xserver.displayManager.lightdm.enable = true;
-
-  # Enable the i3 tiling window manager.
-  services.xserver.windowManager.i3.enable = true;
-
-  # Use fish by default
-  #users.defaultUserShell = "/run/current-system/sw/bin/fish";
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.fox = {
-    isNormalUser = true;
-    home = "/home/fox";
-    description = "Fox";
-    extraGroups = [ "wheel" "networkmanager" ];
-    shell = "/run/current-system/sw/bin/fish";
-    uid = 1000;
+  time = {
+    timeZone = "America/New_York";
   };
 
-  # Enable the Profile Sync daemon to sync browser profiles.
-  services.psd.enable = true;
-  services.psd.users = [ "fox" ];
+  services = {
+    xserver = {
+      enable = true;
+      layout = "us";
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  # Packages to install
-  environment.systemPackages = with pkgs; [
-    vimHugeX
-    git
-    mercurial
-    fish
-    tmux
-    which
-    python
-    dropbox
-    dropbox-cli
-    networkmanager_openvpn
-    rxvt_unicode
-    i3status
-    i3lock
-    dmenu
-    networkmanagerapplet
-    volumeicon
-    redshift
-    chromium
-    firefox
-  ];
+      displayManager = {
+        lightdm = {
+          enable = true;
+        };
+      };
 
-  # System fonts
-  fonts.fonts = with pkgs; [
-    source-code-pro
-  ];
+      desktopManager = {
+        xterm.enable = false;
+        default = "none";
+      };
+
+      windowManager = {
+        default = "i3";
+        i3 = {
+          enable = true;
+        };
+      };
+    };
+  };
+
+  security = {
+    sudo = {
+      enable = true;
+    };
+  };
+
+  users = {
+    extraUsers = {
+      fox = {
+        description = "Fox";
+        home = "/home/fox";
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+        ];
+        shell = "/run/current-system/sw/bin/fish";
+        uid = 1000;
+      };
+    };
+  };
+
+  fonts = {
+    fontconfig = {
+      defaultFonts = {
+        monospace = [
+          "Source Code Pro"
+        ];
+        sansSerif = [
+          "Source Sans Pro"
+        ];
+        serif = [
+          "Source Serif Pro"
+        ];
+      };
+    };
+    fonts = with pkgs; [
+      source-code-pro
+      source-sans-pro
+      source-serif-pro
+    ];
+  };
 
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "15.09";
-
+  system = {
+    stateVersion = "15.09";
+  };
 }
