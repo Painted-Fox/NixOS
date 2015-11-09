@@ -71,6 +71,13 @@
     timeZone = "America/New_York";
   };
 
+  environment = {
+    shells = [
+      "/run/current-system/sw/bin/bash"
+      "/run/current-system/sw/bin/fish"
+    ];
+  };
+
   services = {
     xserver = {
       enable = true;
