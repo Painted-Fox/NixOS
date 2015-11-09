@@ -84,6 +84,10 @@
       layout = "us";
 
       displayManager = {
+        sessionCommands = ''
+          ${pkgs.rxvt_unicode}/bin/urxvtd -q -o -f &
+          ${pkgs.redshift}/bin/redshift &
+        '';
         slim = {
           enable = true;
           autoLogin = true;
