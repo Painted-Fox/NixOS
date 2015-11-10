@@ -64,6 +64,7 @@
       displayManager = {
         sessionCommands = ''
           ${pkgs.rxvt_unicode}/bin/urxvtd -q -o -f &
+          ${pkgs.unclutter}/bin/unclutter -idle 1 &
           ${pkgs.redshift}/bin/redshift &
         '';
         slim = {

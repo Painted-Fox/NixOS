@@ -28,6 +28,7 @@
       rxvt_unicode
       silver-searcher
       tmux
+      unclutter
       vimHugeX
       wget
       which
