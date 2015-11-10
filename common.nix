@@ -5,22 +5,7 @@
     ./packages.nix
   ];
 
-  virtualisation = {
-    virtualbox = {
-      guest = {
-        enable = true;
-      };
-    };
-  };
-
   boot = {
-    initrd = {
-      availableKernelModules = [
-        "ata_piix"
-        "ohci_pci"
-      ];
-    };
-
     kernelModules = [ ];
     extraModulePackages = [ ];
 
@@ -51,7 +36,6 @@
   ];
 
   networking = {
-    hostName = "vox";
     networkmanager = {
       enable = true;
     };
