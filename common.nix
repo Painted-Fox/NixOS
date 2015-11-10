@@ -35,12 +35,6 @@
     { device = "/dev/disk/by-label/swap"; }
   ];
 
-  networking = {
-    networkmanager = {
-      enable = true;
-    };
-  };
-
   nix = {
     maxJobs = 2;
   };

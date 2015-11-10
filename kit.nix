@@ -8,6 +8,9 @@
 
   networking = {
     hostName = "kit";
+    wireless = {
+      enable = true;
+    };
   };
 
   boot = {

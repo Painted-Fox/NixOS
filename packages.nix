@@ -21,8 +21,6 @@
       lsof
       mercurial
       mosh
-      networkmanagerapplet
-      networkmanager_openvpn
       psmisc
       python
       ranger
@@ -31,7 +29,6 @@
       silver-searcher
       tmux
       vimHugeX
-      volumeicon
       wget
       which
     ];
