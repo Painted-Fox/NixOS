@@ -1,0 +1,116 @@
+gdisk /dev/sda
+o
+y
+
+n
+<Enter>
+<Enter>
+256M
+be00
+
+n
+<Enter>
+<Enter>
+<Enter>
+bf00
+
+n
+<Enter>
+34
+<Enter>
+ef02
+
+w
+y
+
+cryptsetup luksFormat -c aes-xts-plain64 -s 512 -h sha512 /dev/sda2
+YES
+
+cryptsetup luksOpen /dev/sda2 nixos-root
+
+mkfs.ext2 /dev/sda1
+
+zpool create -O mountpoint=none -o ashift=12 rpool /dev/mapper/nixos-root
+
+zfs create -o compression=lz4 rpool/ROOT
+zfs create -o compression=lz4 rpool/ROOT/nixos
+zfs create -o compression=lz4 rpool/home
+
+zfs create -V 4G -b $(getconf PAGESIZE) \
+              -o compression=off \
+              -o primarycache=metadata \
+              -o secondarycache=none \
+              -o sync=always \
+              -o com.sun:auto-snapshot=false rpool/swap
+
+zpool import -d /dev/mapper -R /mnt rpool
+
+zfs set mountpoint=/ rpool/ROOT/nixos
+zfs set mountpoint=/home rpool/home
+
+mkswap -f /dev/zvol/rpool/swap
+swapon /dev/zvol/rpool/swap
+
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+
+nixos-generate-config --root /mnt
+
+cd /mnt/etc/nixos
+nano configuration.nix
+
+#####
+
+boot.loader.grub.device = "/dev/sda";
+boot.zfs.forceImportRoot = false;
+boot.zfs.forceImportAll = false;
+boot.initrd.luks.devices = [{
+  name = "nixos-root";
+  device = "/dev/sda2";
+  allowDiscards = true;
+}];
+networking.hostID = "4b52f689";
+environment.systemPackages = with pkgs; [
+  git
+];
+users.extraUsers.fox = {
+  isNormalUsers = true;
+  uid = 1000;
+  extraGroups = [ "wheel" ];
+};
+
+#####
+
+nixos-install
+
+# There were errors at this point, so I went back with the minimal install disk and ran the following:
+
+
+cryptsetup luksOpen /dev/sda2 nixos-root
+zpool import -d /dev/mapper -R /mnt rpool
+zfs set mountpoint=legacy rpool/home            # NixOS depends on legacy mounting!
+zfs set mountpoint=legacy rpool/ROOT/nixos
+zpool set bootfs=rpool/ROOT/nixos rpool         # This is important!
+zpool export rpool                              # Changes that stay!
+
+
+## My fileSystem configuration for reference ##
+
+fileSystems."/" = {
+  device = "rpool/ROOT/nixos";
+  fsType = "zfs";
+};
+
+fileSystems."/home" = {
+  device = "rpool/home";
+  fsType = "zfs";
+};
+
+fileSystems."/boot" = {
+  device = "/dev/disk/by-label/boot";
+  fsType = "ext2";
+};
+
+swapDevices = [
+  { device = "/dev/zvol/rpool/swap"; }
+];
