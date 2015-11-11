@@ -14,6 +14,9 @@
   };
 
   boot = {
+    kernelModules = [ ];
+    extraModulePackages = [ ];
+
     initrd = {
       availableKernelModules = [
         "uhci_hcd"
@@ -22,5 +25,25 @@
         "usb_storage"
       ];
     };
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "ext2";
+    };
+  };
+
+  swapDevices = [
+    { device = "/dev/disk/by-label/swap"; }
+  ];
+
+  nix = {
+    maxJobs = 2;
   };
 }

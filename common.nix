@@ -6,9 +6,6 @@
   ];
 
   boot = {
-    kernelModules = [ ];
-    extraModulePackages = [ ];
-
     loader = {
       grub = {
         device = "/dev/sda";
@@ -18,25 +15,6 @@
         };
       };
     };
-  };
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "ext2";
-    };
-  };
-
-  swapDevices = [
-    { device = "/dev/disk/by-label/swap"; }
-  ];
-
-  nix = {
-    maxJobs = 2;
   };
 
   i18n = {
