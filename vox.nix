@@ -58,6 +58,14 @@
       device = "/dev/disk/by-label/boot";
       fsType = "ext2";
     };
+
+    # Caution: NixOS will crash on boot if there is no VirtualBox shared folder
+    # with the device name here.
+    "/vbox" = {
+      fsType = "vboxsf";
+      device = "share";
+      options = "rw";
+    };
   };
 
   swapDevices = [
