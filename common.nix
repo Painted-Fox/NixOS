@@ -64,6 +64,11 @@
         };
       };
     };
+    polipo = {
+      # Enable Polipo, a simple caching web proxy.
+      # This helps speed up browsers, especially w3m which doesn't cache.
+      enable = true;
+    };
   };
 
   security = {

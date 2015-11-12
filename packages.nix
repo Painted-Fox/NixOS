@@ -30,6 +30,7 @@
       tmux
       unclutter
       vimHugeX
+      w3m
       wget
       which
     ];
