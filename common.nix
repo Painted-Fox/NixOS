@@ -32,6 +32,9 @@
       "/run/current-system/sw/bin/bash"
       "/run/current-system/sw/bin/fish"
     ];
+    variables = {
+      EDITOR = "vim";
+    };
   };
 
   services = {
