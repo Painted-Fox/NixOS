@@ -21,7 +21,7 @@
   boot = {
     kernelModules = [ ];
     extraModulePackages = [ ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_4_2;
 
     initrd = {
       availableKernelModules = [
