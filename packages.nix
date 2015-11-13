@@ -21,6 +21,7 @@
       lsof
       mercurial
       mosh
+      pandoc
       psmisc
       python
       ranger
