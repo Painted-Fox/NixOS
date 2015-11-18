@@ -8,7 +8,6 @@
       chromium
       curl
       dmenu
-      dropbox
       dropbox-cli
       firefoxWrapper
       fish
