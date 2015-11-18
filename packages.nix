@@ -33,6 +33,7 @@
       w3m
       wget
       which
+      xclip
     ];
   };
 
