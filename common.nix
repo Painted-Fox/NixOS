@@ -29,8 +29,8 @@
 
   environment = {
     shells = [
-      "/run/current-system/sw/bin/bash"
-      "/run/current-system/sw/bin/fish"
+      "${pkgs.bash}/bin/bash"
+      "${pkgs.fish}/bin/fish"
     ];
     variables = {
       EDITOR = "vim";
