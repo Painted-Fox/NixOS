@@ -22,9 +22,11 @@
       lsof
       mercurial
       mosh
+      mpv
       pandoc
       psmisc
       python
+      python34Packages.mps-youtube
       ranger
       redshift
       rxvt_unicode
