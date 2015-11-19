@@ -13,10 +13,12 @@
       fish
       gitAndTools.gitFull
       htop
+      httpie
       i3lock
       i3status
       iftop
       iputils
+      libqalculate
       lsof
       mercurial
       mosh
