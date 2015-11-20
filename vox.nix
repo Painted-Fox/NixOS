@@ -18,6 +18,16 @@
     };
   };
 
+  services = {
+    xserver = {
+      displayManager = {
+        sessionCommands = ''
+          xrandr --output VGA-1 --auto --output VGA-0 --auto --right-of VGA-1
+        '';
+      };
+    };
+  };
+
   boot = {
     kernelModules = [ ];
     extraModulePackages = [ ];
