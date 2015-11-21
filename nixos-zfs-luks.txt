@@ -28,13 +28,13 @@ YES
 
 cryptsetup luksOpen /dev/sda2 nixos-root
 
-mkfs.ext2 /dev/sda1
+mkfs.ext2 -L boot /dev/sda1
 
 zpool create -O mountpoint=none -o ashift=12 rpool /dev/mapper/nixos-root
 
 zfs create -o compression=lz4 rpool/ROOT
-zfs create -o compression=lz4 rpool/ROOT/nixos
-zfs create -o compression=lz4 rpool/home
+zfs create -o compression=lz4 -o mountpoint=legacy rpool/ROOT/nixos
+zfs create -o compression=lz4 -o mountpoint=legacy rpool/home
 
 zfs create -V 4G -b $(getconf PAGESIZE) \
               -o compression=off \
@@ -43,16 +43,22 @@ zfs create -V 4G -b $(getconf PAGESIZE) \
               -o sync=always \
               -o com.sun:auto-snapshot=false rpool/swap
 
-zpool import -d /dev/mapper -R /mnt rpool
+zpool set bootfs=rpool/ROOT/nixos rpool         # This is important!
+zpool export rpool                              # Changes that stay!
 
-zfs set mountpoint=/ rpool/ROOT/nixos
-zfs set mountpoint=/home rpool/home
+zpool import -d /dev/mapper -R /mnt rpool
 
 mkswap -f /dev/zvol/rpool/swap
 swapon /dev/zvol/rpool/swap
 
+mount -t zfs rpool/ROOT/nixos /mnt
+
+mkdir /mnt/home
+mount -t zfs rpool/home /mnt/home
+
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
+
 
 nixos-generate-config --root /mnt
 
@@ -69,12 +75,12 @@ boot.initrd.luks.devices = [{
   device = "/dev/sda2";
   allowDiscards = true;
 }];
-networking.hostID = "4b52f689";
+networking.hostId = "4b52f689";
 environment.systemPackages = with pkgs; [
   git
 ];
 users.extraUsers.fox = {
-  isNormalUsers = true;
+  isNormalUser = true;
   uid = 1000;
   extraGroups = [ "wheel" ];
 };
@@ -83,16 +89,22 @@ users.extraUsers.fox = {
 
 nixos-install
 
-# There were errors at this point, so I went back with the minimal install disk and ran the following:
+# Before you reboot, export rpool
+umount /mnt/boot
+zpool export rpool
+reboot
 
+# If there are errors, you can debug by rebooting and booting from the install disk/USB
+# The following will mount the disk:
 
 cryptsetup luksOpen /dev/sda2 nixos-root
 zpool import -d /dev/mapper -R /mnt rpool
-zfs set mountpoint=legacy rpool/home            # NixOS depends on legacy mounting!
-zfs set mountpoint=legacy rpool/ROOT/nixos
-zpool set bootfs=rpool/ROOT/nixos rpool         # This is important!
-zpool export rpool                              # Changes that stay!
+mount -t zfs rpool/ROOT/nixos /mnt
+mount -t zfs rpool/home /mnt/home
 
+# When you're done though, don't forget to export.
+umount /mnt/boot
+zpool export rpool
 
 ## My fileSystem configuration for reference ##
 
