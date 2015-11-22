@@ -9,6 +9,29 @@
   networking = {
     hostId = "a794f064";
     hostName = "stout";
+    enableIPv6 = false;
+    interfaces = {
+      enp2s0 = {
+        ip4 = [{
+          address = "192.168.0.42";
+          prefixLength = 24;
+        }];
+      };
+    };
+    defaultGateway = "192.168.0.1";
+    nameservers = [
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
+  };
+
+  services = {
+    openssh = {
+      enable = true;
+      passwordAuthentication = false;
+      permitRootLogin = "no";
+      ports = [ 54321 ];
+    };
   };
 
   boot = {

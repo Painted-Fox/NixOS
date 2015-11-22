@@ -91,6 +91,13 @@
           "networkmanager"
         ];
         uid = 1000;
+        openssh = {
+          authorizedKeys = {
+            keys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEP47Z49gOP/fHWzCLWpOgSWGHDEdDT8VyJAlNhjsQPx Painted_Fox_Ed25519"
+            ];
+          };
+        };
       };
     };
   };
