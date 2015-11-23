@@ -50,14 +50,6 @@
         "usb_storage"
         "floppy"
       ];
-
-      luks = {
-        devices = [{
-          name = "nixos-root";
-          device = "/dev/sda2";
-          allowDiscards = true;
-        }];
-      };
     };
 
     zfs = {
