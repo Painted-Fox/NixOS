@@ -32,6 +32,9 @@
     kernelModules = [ ];
     extraModulePackages = [ ];
     kernelPackages = pkgs.linuxPackages_4_2;
+    kernelParams = [
+      "zfs.zfs_arc_max=536870912" # Limit zfs arc cache to 512MB
+    ];
 
     initrd = {
       availableKernelModules = [
@@ -78,10 +81,6 @@
       options = "rw";
     };
   };
-
-  swapDevices = [
-    { device = "/dev/zvol/rpool/swap"; }
-  ];
 
   nix = {
     maxJobs = 2;
