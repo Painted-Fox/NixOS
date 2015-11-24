@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -10,13 +10,7 @@
     hostName = "vox";
   };
 
-  virtualisation = {
-    virtualbox = {
-      guest = {
-        enable = true;
-      };
-    };
-  };
+  virtualisation.virtualbox.guest.enable = true;
 
   services = {
     xserver = {
@@ -32,45 +26,21 @@
     kernelModules = [ ];
     extraModulePackages = [ ];
     kernelPackages = pkgs.linuxPackages_4_2;
-    kernelParams = [
-      "zfs.zfs_arc_max=536870912" # Limit zfs arc cache to 512MB
-    ];
 
     initrd = {
       availableKernelModules = [
         "ata_piix"
         "ohci_pci"
+        "ahci"
       ];
-
-      luks = {
-        devices = [{
-          name = "nixos-root";
-          device = "/dev/sda2";
-          allowDiscards = true;
-        }];
-      };
-    };
-
-    zfs = {
-      forceImportRoot = false;
-      forceImportAll = false;
     };
   };
 
   fileSystems = {
     "/" = {
-      device = "rpool/ROOT/nixos";
-      fsType = "zfs";
-    };
-
-    "/home" = {
-      device = "rpool/home";
-      fsType = "zfs";
-    };
-
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "ext2";
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = "noatime,discard,ssd,compress=lzo,space_cache";
     };
 
     # Caution: NixOS will crash on boot if there is no VirtualBox shared folder
