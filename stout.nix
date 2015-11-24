@@ -30,7 +30,6 @@
       enable = true;
       passwordAuthentication = false;
       permitRootLogin = "no";
-      ports = [ 54321 ];
     };
   };
 
