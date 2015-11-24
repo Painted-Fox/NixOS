@@ -1,3 +1,27 @@
+# Vox is a VirtualBox machine.
+#
+# Encryption is handled by VirtualBox to simplify setup and configuration.
+# It also removes the need to enter a password every reboot.  The virtual disk
+# is setup in VirtualBox to show as a solid-state drive to the guest machine.
+#
+# Btrfs occupies the entire data storage device, replacing MBR or GPT.  During
+# installation, the disk was setup via:
+#
+#   mkfs.btrfs -L nixos /dev/sda
+#   mount -o noatime,discard,ssd,space_cache /dev/sda /mnt
+#   nixos-generate-config --root /mnt
+#
+# Normally, the disadvantage to having Btrfs occupy the entire storage device
+# is that it doesn't allow for partition encryption or swap space.  However,
+# I use VirtualBox to encrypt the virtual disk, and I don't need swap space.
+# If I run out of memory and run into errors, I can simply reboot and add more
+# memory to the guest machine.
+#
+# Note that I did not enable compression during installation.  This can be run
+# post install to apply compression to the installed files:
+#
+#   btrfs filesystem defragment -r -v clzo /
+
 { config, lib, pkgs, ... }:
 
 {
