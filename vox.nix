@@ -32,6 +32,7 @@
   networking = {
     hostId = "4b52f689";
     hostName = "vox";
+    enableIPv6 = false;
   };
 
   virtualisation.virtualbox.guest.enable = true;
