@@ -37,10 +37,20 @@
     };
   };
 
+  programs = {
+    ssh = {
+      # The startGnuPGAgent takes places of this.
+      startAgent = false;
+    };
+  };
+
   services = {
     xserver = {
       enable = true;
       layout = "us";
+
+      # Start the GnuPG agent when logged in.
+      startGnuPGAgent = true;
 
       displayManager = {
         sessionCommands = ''
