@@ -19,6 +19,7 @@
       i3status
       iftop
       iputils
+      isync       # IMAP and MailDir mailbox synchronizer.
       keepassx2   # KeePass Password manager.
       libqalculate
       lsof
