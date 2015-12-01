@@ -12,7 +12,7 @@
       firefoxWrapper
       fish
       gitAndTools.gitFull
-      gnupg21   # GnuPG is a free implementation of the OpenPGP standard.
+      gnupg21     # GnuPG is a free implementation of the OpenPGP standard.
       htop
       httpie
       i3lock
@@ -25,7 +25,7 @@
       mosh
       mpv
       pandoc
-      pass    # Password manager that follows Unix philosophy by zx2c4
+      pass        # Password manager that follows Unix philosophy by zx2c4
       psmisc
       python
       python34Packages.mps-youtube
