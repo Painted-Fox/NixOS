@@ -19,6 +19,7 @@
       i3status
       iftop
       iputils
+      keepassx2   # KeePass Password manager.
       libqalculate
       lsof
       mercurial
