@@ -6,6 +6,7 @@
       bash
       bc
       chromium
+      conky
       curl
       dmenu
       dropbox-cli
@@ -16,7 +17,6 @@
       htop
       httpie
       i3lock
-      i3status
       iftop
       iputils
       isync       # IMAP and MailDir mailbox synchronizer.
@@ -26,6 +26,7 @@
       mercurial
       mosh
       mpv
+      openvpn
       pandoc
       pass        # Password manager that follows Unix philosophy by zx2c4
       psmisc
