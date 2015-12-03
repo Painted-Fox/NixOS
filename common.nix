@@ -135,6 +135,11 @@
     ];
   };
 
+  networking = {
+    # Go back to using eth0 and wlan0
+    usePredictableInterfaceNames = false;
+  };
+
   # The NixOS release to be compatible with for stateful data such as databases.
   system = {
     stateVersion = "15.09";
