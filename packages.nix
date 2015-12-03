@@ -6,7 +6,6 @@
       bash
       bc
       chromium
-      conky
       curl
       dmenu
       dropbox-cli
@@ -17,6 +16,7 @@
       htop
       httpie
       i3lock
+      i3status
       iftop
       iputils
       isync       # IMAP and MailDir mailbox synchronizer.
